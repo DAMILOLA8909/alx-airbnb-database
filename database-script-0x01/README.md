@@ -69,4 +69,4 @@ These indexes ensure efficient query execution on high-frequency lookup fields.
 
 ### PostgreSQL
 ```bash
-psql -U your_username -d airbnb_db -f schema.sql
+psql -U DAMILOLA8909 -d airbnb_db -f schema.sql
