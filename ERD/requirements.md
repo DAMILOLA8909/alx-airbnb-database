@@ -25,7 +25,7 @@ This document describes the ER diagram representing the database structure for t
 
 - **Primary Key:** user_id
 
--**Attributes:**
+- **Attributes:**
 
     - first_name
 
@@ -152,34 +152,13 @@ This document describes the ER diagram representing the database structure for t
 
 When drawing your ER diagram (using draw.io, Lucidchart, or ERDPlus), represent the following visually:
 
-    - **Entities** as rectangles (User, Property, Booking, Payment, Review, Message)
+- **Entities** as rectangles (User, Property, Booking, Payment, Review, Message)
 
-    - **Attributes** as ovals connected to their entities
+- **Attributes** as ovals connected to their entities
 
-    - **Primary keys** underlined
+- **Primary keys** underlined
 
-    - **Relationships** as diamonds with labeled lines between entities
+- **Relationships** as diamonds with labeled lines between entities
 
-Example layout (in conceptual form):
+---
 
-User (user_id, first_name, last_name, email, password_hash, phone_number, role, created_at)
-     | 1----< host_id
-     |
-     |--------------------< Property (property_id, name, description, location, pricepernight, created_at, updated_at)
-     |
-     | 1----< user_id
-     |
-     |--------------------< Booking (booking_id, start_date, end_date, total_price, status, created_at)
-                                  | 1----< booking_id
-                                  |
-                                  |--------------------< Payment (payment_id, amount, payment_date, payment_method)
-
-Property (property_id)
-     | 1----< review_id
-     |
-     |--------------------< Review (review_id, rating, comment, created_at, user_id)
-
-User (user_id)
-     | 1----< message_id
-     |
-     |--------------------< Message (message_id, sender_id, recipient_id, message_body, sent_at)
