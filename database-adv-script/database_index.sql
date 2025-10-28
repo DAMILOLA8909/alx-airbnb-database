@@ -11,7 +11,32 @@
 -- properties.name      → Used for search and sorting
 
 -- ==========================================
--- 1️⃣ CREATE INDEXES
+
+-- 1️⃣ Identify High-Usage Columns
+-- Columns frequently used in WHERE, JOIN, and ORDER BY:
+-- - users.user_id
+-- - bookings.user_id
+-- - bookings.property_id
+-- - properties.property_id
+
+-- 2️⃣ Measure Query Performance BEFORE Indexing
+EXPLAIN ANALYZE
+SELECT 
+    u.user_id,
+    u.name,
+    COUNT(b.booking_id) AS total_bookings
+FROM 
+    users u
+JOIN 
+    bookings b ON u.user_id = b.user_id
+GROUP BY 
+    u.user_id
+ORDER BY 
+    total_bookings DESC;
+
+
+-- ==========================================
+-- 3️⃣ Create Indexes to Improve Performance
 -- ==========================================
 
 -- Index on user_id in bookings (speeds up joins with users)
@@ -30,15 +55,31 @@ ON properties(name);
 CREATE INDEX idx_bookings_user_property
 ON bookings(user_id, property_id);
 
+
+-- 4️⃣ Measure Query Performance AFTER Indexing
+EXPLAIN ANALYZE
+SELECT 
+    u.user_id,
+    u.name,
+    COUNT(b.booking_id) AS total_bookings
+FROM 
+    users u
+JOIN 
+    bookings b ON u.user_id = b.user_id
+GROUP BY 
+    u.user_id
+ORDER BY 
+    total_bookings DESC;
+
 -- ==========================================
--- 2️⃣ VERIFY INDEXES
+--  VERIFY INDEXES
 -- ==========================================
 -- SHOW INDEX FROM bookings;
 -- SHOW INDEX FROM properties;
 -- SHOW INDEX FROM users;
 
 -- ==========================================
--- 3️⃣ PERFORMANCE TEST
+-- PERFORMANCE TEST
 -- ==========================================
 -- Use EXPLAIN or ANALYZE to measure performance impact:
 
