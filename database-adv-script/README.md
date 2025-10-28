@@ -383,6 +383,7 @@ Sample records are provided for `users`, `properties`, and `bookings` so queries
 Run:
 ```bash
 mysql -u <your_username> -p airbnb_db < database-adv-script/aggregations_and_window_functions.sql
+```
 
 | user_name     | total_bookings |
 | ------------- | -------------- |
