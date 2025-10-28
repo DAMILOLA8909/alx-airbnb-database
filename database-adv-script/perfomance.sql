@@ -3,7 +3,7 @@
 -- File: perfomance.sql
 -- ==========================================
 
--- 0️⃣ Create Helpful Indexes (to optimize joins and filtering)
+-- 0️⃣ Create Helpful Indexes (for optimized joins and filtering)
 CREATE INDEX idx_bookings_user_id ON bookings(user_id);
 CREATE INDEX idx_bookings_property_id ON bookings(property_id);
 CREATE INDEX idx_bookings_booking_id ON bookings(booking_id);
@@ -13,7 +13,8 @@ CREATE INDEX idx_properties_property_id ON properties(property_id);
 
 -- ==========================================
 -- 1️⃣ Initial Query (Unoptimized)
--- Retrieve all bookings along with user, property, and payment details
+-- Retrieve all bookings with user, property, and payment details
+-- and apply filtering using WHERE and AND clauses
 -- ==========================================
 
 EXPLAIN
@@ -38,15 +39,17 @@ JOIN
 JOIN 
     properties p ON b.property_id = p.property_id
 LEFT JOIN 
-    payments pay ON b.booking_id = pay.booking_id;
+    payments pay ON b.booking_id = pay.booking_id
+WHERE 
+    b.check_in_date >= '2025-01-01'
+    AND pay.status = 'Completed';
 
 -- ==========================================
 -- 2️⃣ Refactored Query (Optimized)
 -- Optimizations applied:
--- - Reduced columns selected
--- - Changed LEFT JOIN → INNER JOIN (assuming all bookings have payments)
--- - Aliased tables for readability
--- - Indexes ensure faster lookup
+-- - Reduced selected columns
+-- - Changed LEFT JOIN → INNER JOIN (for matching payments)
+-- - Simplified WHERE clause to leverage indexes
 -- ==========================================
 
 EXPLAIN
@@ -63,4 +66,7 @@ JOIN
 JOIN 
     properties p ON b.property_id = p.property_id
 JOIN 
-    payments pay ON b.booking_id = pay.booking_id;
+    payments pay ON b.booking_id = pay.booking_id
+WHERE 
+    b.check_in_date >= '2025-01-01'
+    AND pay.status = 'Completed';
