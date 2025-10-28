@@ -173,13 +173,13 @@ mysql -u <your_username> -p airbnb_db < database-adv-script/joins_queries.sql
 
 By the end of this task, you should be able to:
 
-    - Understand and apply INNER, LEFT, and FULL OUTER JOINs
+- Understand and apply INNER, LEFT, and FULL OUTER JOINs
 
-    - Retrieve relational data from multiple tables
+- Retrieve relational data from multiple tables
 
-    - Write clean, efficient, and testable SQL join queries
+- Write clean, efficient, and testable SQL join queries
 
-    - Analyze how different joins affect result sets
+- Analyze how different joins affect result sets
 
 ---
 
@@ -268,6 +268,150 @@ mysql -u <your_username> -p airbnb_db < database-adv-script/subqueries.sql
 
 - Perform aggregate-based filtering using subqueries
 
+
+---
+
+---
+
+# 📊 SQL Aggregation and Window Functions – Airbnb Database Script
+
+This module demonstrates how to use **aggregation** and **window functions** in SQL  
+to analyze user and property booking data effectively.
+
+---
+
+## 🎯 Objective
+- Count total bookings made by each user using `COUNT()` and `GROUP BY`
+- Use window functions (`RANK()` and `ROW_NUMBER()`) to rank and number properties based on booking volume
+
+---
+
+## 🧮 1️⃣ Aggregation Query
+**Goal:** Find total number of bookings made by each user  
+
+```sql
+SELECT 
+    u.user_id,
+    u.name AS user_name,
+    COUNT(b.booking_id) AS total_bookings
+FROM 
+    users u
+LEFT JOIN 
+    bookings b
+ON 
+    u.user_id = b.user_id
+GROUP BY 
+    u.user_id, u.name
+ORDER BY 
+    total_bookings DESC;
+```
+#### 📘 Explanation:
+- Counts all bookings made by each user.
+- LEFT JOIN ensures even users with no bookings are included.
+
+---
+
+### 2️⃣ Window Function Query – Using RANK()
+
+Goal: Rank properties by number of bookings
+```sql
+SELECT 
+    p.property_id,
+    p.name AS property_name,
+    COUNT(b.booking_id) AS total_bookings,
+    RANK() OVER (ORDER BY COUNT(b.booking_id) DESC) AS property_rank
+FROM 
+    properties p
+LEFT JOIN 
+    bookings b
+ON 
+    p.property_id = b.property_id
+GROUP BY 
+    p.property_id, p.name
+ORDER BY 
+    total_bookings DESC;
+```
+#### 📘 Explanation:
+
+- RANK() assigns a position based on total bookings.
+
+- If two properties have the same count, they share the same rank.
+
+---
+
+### 3️⃣ Window Function Query – Using ROW_NUMBER()
+
+Goal: Assign unique sequential numbers to each property
+```sql
+SELECT 
+    p.property_id,
+    p.name AS property_name,
+    COUNT(b.booking_id) AS total_bookings,
+    ROW_NUMBER() OVER (ORDER BY COUNT(b.booking_id) DESC) AS property_row_number
+FROM 
+    properties p
+LEFT JOIN 
+    bookings b
+ON 
+    p.property_id = b.property_id
+GROUP BY 
+    p.property_id, p.name
+ORDER BY 
+    total_bookings DESC;
+```
+
+#### 📘 Explanation:
+
+- ROW_NUMBER() assigns a unique number to each row, even if booking totals tie.
+
+- Ideal for pagination or sequential data analysis.
+
+---
+
+### ⚙️ How to Run
+
+```bash
+mysql -u <your_username> -p airbnb_db < database-adv-script/aggregations_and_window_functions.sql
+```
+
+---
+
+### 🧪 Sample Data Demonstration
+
+Sample records are provided for `users`, `properties`, and `bookings` so queries can be tested directly.
+
+Run:
+```bash
+mysql -u <your_username> -p airbnb_db < database-adv-script/aggregations_and_window_functions.sql
+
+| user_name     | total_bookings |
+| ------------- | -------------- |
+| David Brown   | 3              |
+| Brian Smith   | 3              |
+| Cynthia Lee   | 3              |
+| Alice Johnson | 2              |
+| Ella Turner   | 1              |
+
+| property_name        | total_bookings | property_rank | property_row_number |
+| -------------------- | -------------- | ------------- | ------------------- |
+| Ocean View Apartment | 3              | 1             | 1                   |
+| City Center Loft     | 3              | 1             | 2                   |
+| Beach Villa          | 3              | 1             | 3                   |
+| Mountain Cabin       | 2              | 4             | 4                   |
+| Country House        | 1              | 5             | 5                   |
+
+
+### ✅ Expected Learning Outcomes
+
+- Summarize data using COUNT() and GROUP BY
+
+- Analyze datasets using RANK() and ROW_NUMBER()
+
+- Understand how window functions differ from regular aggregations
+
+- Write analytical queries that power reporting dashboards
+
+---
 
 ---
 
