@@ -69,4 +69,13 @@ These indexes ensure efficient query execution on high-frequency lookup fields.
 
 ### PostgreSQL
 ```bash
-psql -U DAMILOLA8909 -d airbnb_db -f schema.sql
+psql -U your_username -d airbnb_db -f schema.sql
+
+### MySQL
+
+mysql -u your_username -p airbnb_db < schema.sql
+
+### License
+
+This project is part of the ALX AirBnB Database Design learning module.
+It demonstrates database design, normalization, and SQL schema definition following best industry practices.
