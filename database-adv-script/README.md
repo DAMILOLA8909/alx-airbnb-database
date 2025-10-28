@@ -183,6 +183,94 @@ By the end of this task, you should be able to:
 
 ---
 
+---
+
+# 🧠 SQL Subqueries – Airbnb Database Script
+
+This project demonstrates how to use **subqueries** in SQL to retrieve data based on conditions from other queries.  
+It includes both **correlated** and **non-correlated** examples.
+
+---
+
+## 🎯 Objective
+- Write a query using a non-correlated subquery to find properties with average ratings greater than 4.0  
+- Write a correlated subquery to find users who have made more than 3 bookings  
+
+---
+
+## 🧩 Queries Overview
+
+### 1️⃣ Non-Correlated Subquery
+**Goal:** Find all properties where the average rating is greater than 4.0  
+
+```sql
+SELECT 
+    p.property_id,
+    p.name AS property_name,
+    p.location
+FROM 
+    properties p
+WHERE 
+    p.property_id IN (
+        SELECT 
+            r.property_id
+        FROM 
+            reviews r
+        GROUP BY 
+            r.property_id
+        HAVING 
+            AVG(r.rating) > 4.0
+    );
+```
+#### 📘 Explanation:
+The inner query calculates the average rating for each property.
+The outer query then selects only those properties whose average rating exceeds 4.0.
+
+### 2️⃣ Correlated Subquery
+
+Goal: Find users who have made more than 3 bookings
+
+```sql
+SELECT 
+    u.user_id,
+    u.name AS user_name,
+    u.email
+FROM 
+    users u
+WHERE 
+    (
+        SELECT 
+            COUNT(*)
+        FROM 
+            bookings b
+        WHERE 
+            b.user_id = u.user_id
+    ) > 3;
+```
+📘 Explanation:
+Here, the inner query is correlated with the outer one because it depends on each specific user (u.user_id).
+It counts how many bookings each user has made and returns those with more than 3.
+
+---
+
+### ⚙️ How to Run
+
+In your terminal:
+```bash
+mysql -u <your_username> -p airbnb_db < database-adv-script/subqueries.sql
+```
+
+### ✅ Expected Learning Outcomes
+
+- Understand the difference between correlated and non-correlated subqueries
+
+- Write efficient nested queries for complex data filtering
+
+- Perform aggregate-based filtering using subqueries
+
+
+---
+
 ## 🧑‍💻 Author
 
 **Damilola Ojo**
