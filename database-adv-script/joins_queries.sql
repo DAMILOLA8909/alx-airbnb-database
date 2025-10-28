@@ -96,7 +96,7 @@ ON
 -- 4️⃣ LEFT JOIN Query
 -- ==========================================
 
--- Retrieve all properties and their reviews, including properties that have no reviews
+-- LEFT JOIN: Retrieve all properties and their reviews, including properties that have no reviews
 SELECT 
     properties.property_id,
     properties.name AS property_name,
@@ -108,7 +108,9 @@ FROM
 LEFT JOIN 
     reviews 
 ON 
-    properties.property_id = reviews.property_id;
+    properties.property_id = reviews.property_id
+ORDER BY 
+    properties.property_id;
 
 -- ==========================================
 -- 5️⃣ FULL OUTER JOIN (Simulated)
