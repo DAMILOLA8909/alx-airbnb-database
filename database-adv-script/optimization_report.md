@@ -120,3 +120,10 @@ The refactored query demonstrates:
 - Improved execution time and scalability
 
 By analyzing query plans and applying indexing, SQL performance can be **drastically improved** in large-scale applications.
+
+---
+
+## 🧑‍💻 Author
+
+#### Damilola Ojo
+ALX Advanced SQL Project – Query Optimization
